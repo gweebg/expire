@@ -20,7 +20,7 @@ config :expire, ExpireWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Expire.PubSub,
-  live_view: [signing_salt: "NeSlFD/C"]
+  live_view: [signing_salt: "yHM2usZq"]
 
 # Configures the mailer
 #

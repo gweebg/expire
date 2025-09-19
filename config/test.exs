@@ -6,18 +6,15 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :expire, Expire.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "expire_test#{System.get_env("MIX_TEST_PARTITION")}",
-  pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: System.schedulers_online() * 2
+  database: Path.expand("../expire_test.db", __DIR__),
+  pool_size: 5,
+  pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :expire, ExpireWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "5vu1jEX+ceeVrN1lig8gZgt3Hhh953kdDFPn+ZjPEPGfOxDXGZ6rEjwUS1wf8irJ",
+  secret_key_base: "cY+c6aY9UXoOmwsIYYryGWcFTVtrMjEHvCySf65ioFn6663S+pd5fugV83YICOMb",
   server: false
 
 # In test we don't send emails

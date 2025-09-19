@@ -2,13 +2,10 @@ import Config
 
 # Configure your database
 config :expire, Expire.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "expire_dev",
+  database: Path.expand("../expire_dev.db", __DIR__),
+  pool_size: 5,
   stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  show_sensitive_data_on_connection_error: true
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -23,7 +20,7 @@ config :expire, ExpireWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "ipMY97LNcWzUl3LqZ03CZpHtE+jVmZ+loBojFfrJ0jQb5ydRaPLKujUff7G12ohz",
+  secret_key_base: "Yksux7KkSJ2NHMSYHzl7bJZIcNvQjF/UZCwARi6m8cN69YE935Sl4OA+0BU696/X",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:expire, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:expire, ~w(--watch)]}

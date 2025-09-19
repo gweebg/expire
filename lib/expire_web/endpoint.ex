@@ -7,7 +7,7 @@ defmodule ExpireWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_expire_key",
-    signing_salt: "inLO6zgi",
+    signing_salt: "+J1Xxpvm",
     same_site: "Lax"
   ]
 
