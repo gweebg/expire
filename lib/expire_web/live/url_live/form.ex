@@ -8,20 +8,25 @@ defmodule ExpireWeb.UrlLive.Form do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <.header>
-        {@page_title}
-        <:subtitle>Use this form to manage url records in your database.</:subtitle>
-      </.header>
-
-      <.form for={@form} id="url-form" phx-change="validate" phx-submit="save">
-        <.input field={@form[:short]} type="text" label="Short" />
-        <.input field={@form[:long]} type="text" label="Long" />
-        <.input field={@form[:expire_at]} type="datetime-local" label="Expire at" />
-        <footer>
-          <.button phx-disable-with="Saving..." variant="primary">Save Url</.button>
-          <.button navigate={return_path(@current_scope, @return_to, @url)}>Cancel</.button>
-        </footer>
-      </.form>
+      <div class="card bg-base-100 shadow-sm">
+        <figure>
+          <img
+            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+            alt="Shoes"
+          />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title">{@page_title}</h2>
+          <.form for={@form} id="url-form" phx-change="validate" phx-submit="save">
+            <.input field={@form[:long]} type="text" />
+            <.input field={@form[:expire_at]} type="datetime-local" label="Expire at" />
+            <footer>
+              <.button phx-disable-with="Saving..." variant="primary">Save Url</.button>
+              <.button navigate={return_path(@current_scope, @return_to, @url)}>Cancel</.button>
+            </footer>
+          </.form>
+        </div>
+      </div>
     </Layouts.app>
     """
   end
@@ -50,7 +55,7 @@ defmodule ExpireWeb.UrlLive.Form do
     url = %Url{user_id: socket.assigns.current_scope.user.id}
 
     socket
-    |> assign(:page_title, "New Url")
+    |> assign(:page_title, "Shorten URL")
     |> assign(:url, url)
     |> assign(:form, to_form(Urls.change_url(socket.assigns.current_scope, url)))
   end
@@ -96,5 +101,5 @@ defmodule ExpireWeb.UrlLive.Form do
   end
 
   defp return_path(_scope, "index", _url), do: ~p"/urls"
-  defp return_path(_scope, "show", url), do: ~p"/urls/#{url}"
+  defp return_path(_scope, "show", url), do: ~p"/urls"
 end

@@ -12,5 +12,6 @@ defmodule Expire.Repo.Migrations.CreateUrls do
     end
 
     create index(:urls, [:user_id])
+    create unique_index(:urls, [:short])
   end
 end

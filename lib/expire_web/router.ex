@@ -23,10 +23,10 @@ defmodule ExpireWeb.Router do
     get "/", PageController, :home
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ExpireWeb do
-  #   pipe_through :api
-  # end
+  scope "/url", ExpireWeb do
+    pipe_through :api
+    get "/:id", UrlController, :show
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:expire, :dev_routes) do
@@ -63,10 +63,14 @@ defmodule ExpireWeb.Router do
     pipe_through [:browser]
 
     live_session :current_user,
-      on_mount: [{ExpireWeb.UserAuth, :mount_current_scope}] do
+      on_mount: [{ExpireWeb.UserAuth, :mount_current_scope}, {ExpireWeb.LiveHooks.CurrentPath, :current_path}] do
       live "/users/register", UserLive.Registration, :new
       live "/users/log-in", UserLive.Login, :new
       live "/users/log-in/:token", UserLive.Confirmation, :new
+
+      scope "/urls" do
+        live "/", UrlLive.Index, :show
+      end
     end
 
     post "/users/log-in", UserSessionController, :create

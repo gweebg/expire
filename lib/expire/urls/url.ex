@@ -37,5 +37,6 @@ defmodule Expire.Urls.Url do
     url
     |> cast(attrs, [:short])
     |> validate_required(:short)
+    |> unique_constraint(:short)
   end
 end

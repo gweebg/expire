@@ -59,7 +59,26 @@ defmodule Expire.Urls do
 
   """
   def get_url!(%Scope{} = scope, id) do
-    Repo.get_by!(Url, id: id, user_id: scope.user.id)
+    Url
+    |> Repo.get_by!(id: id, user_id: scope.user.id)
+  end
+
+  @doc """
+  Gets an url by its short form.
+
+  Returns `nil` if it doesn't exist.
+
+  ## Examples
+
+      iex> get_url_by_short("aX1u")
+      %Url{}
+
+      iex> get_url_by_short("1")
+      nil
+  """
+  def get_url_by_short(short_name) when is_binary(short_name) do
+    Url
+    |> Repo.get_by(short: short_name)
   end
 
   @doc """

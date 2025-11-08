@@ -26,6 +26,8 @@ defmodule Expire.Accounts do
     Repo.get_by(User, email: email)
   end
 
+  def another_function(), do: :ok
+
   @doc """
   Gets a user by email and password.
 
