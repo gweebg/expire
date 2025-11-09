@@ -48,6 +48,10 @@ if config_env() == :prod do
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :expire, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+  config :expire, :anon_salt, System.get_env("ANON_SALT") ||
+    raise """
+    environment variable ANON_SALT is missing.
+    """
 
   config :expire, ExpireWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],

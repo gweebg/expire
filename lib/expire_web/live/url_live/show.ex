@@ -23,7 +23,7 @@ defmodule ExpireWeb.UrlLive.Show do
       <.list>
         <:item title="Short">{@url.short}</:item>
         <:item title="Long">{@url.long}</:item>
-        <:item title="Expire at">{@url.expire_at}</:item>
+        <:item title="Expire at">{@url.expires_at}</:item>
       </.list>
     </Layouts.app>
     """

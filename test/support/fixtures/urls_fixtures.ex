@@ -10,7 +10,7 @@ defmodule Expire.UrlsFixtures do
   def url_fixture(scope, attrs \\ %{}) do
     attrs =
       Enum.into(attrs, %{
-        expire_at: ~U[2025-09-25 21:00:00Z],
+        expires_at: ~U[2025-09-25 21:00:00Z],
         long: "some long",
         short: "some short"
       })

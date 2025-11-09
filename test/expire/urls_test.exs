@@ -9,7 +9,7 @@ defmodule Expire.UrlsTest do
     import Expire.AccountsFixtures, only: [user_scope_fixture: 0]
     import Expire.UrlsFixtures
 
-    @invalid_attrs %{short: nil, long: nil, expire_at: nil}
+    @invalid_attrs %{short: nil, long: nil, expires_at: nil}
 
     test "list_urls/1 returns all scoped urls" do
       scope = user_scope_fixture()
@@ -29,13 +29,13 @@ defmodule Expire.UrlsTest do
     end
 
     test "create_url/2 with valid data creates a url" do
-      valid_attrs = %{short: "some short", long: "some long", expire_at: ~U[2025-09-25 21:00:00Z]}
+      valid_attrs = %{short: "some short", long: "some long", expires_at: ~U[2025-09-25 21:00:00Z]}
       scope = user_scope_fixture()
 
       assert {:ok, %Url{} = url} = Urls.create_url(scope, valid_attrs)
       assert url.short == "some short"
       assert url.long == "some long"
-      assert url.expire_at == ~U[2025-09-25 21:00:00Z]
+      assert url.expires_at == ~U[2025-09-25 21:00:00Z]
       assert url.user_id == scope.user.id
     end
 
@@ -47,12 +47,17 @@ defmodule Expire.UrlsTest do
     test "update_url/3 with valid data updates the url" do
       scope = user_scope_fixture()
       url = url_fixture(scope)
-      update_attrs = %{short: "some updated short", long: "some updated long", expire_at: ~U[2025-09-26 21:00:00Z]}
+
+      update_attrs = %{
+        short: "some updated short",
+        long: "some updated long",
+        expires_at: ~U[2025-09-26 21:00:00Z]
+      }
 
       assert {:ok, %Url{} = url} = Urls.update_url(scope, url, update_attrs)
       assert url.short == "some updated short"
       assert url.long == "some updated long"
-      assert url.expire_at == ~U[2025-09-26 21:00:00Z]
+      assert url.expires_at == ~U[2025-09-26 21:00:00Z]
     end
 
     test "update_url/3 with invalid scope raises" do

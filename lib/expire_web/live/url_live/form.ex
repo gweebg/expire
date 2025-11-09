@@ -19,7 +19,7 @@ defmodule ExpireWeb.UrlLive.Form do
           <h2 class="card-title">{@page_title}</h2>
           <.form for={@form} id="url-form" phx-change="validate" phx-submit="save">
             <.input field={@form[:long]} type="text" />
-            <.input field={@form[:expire_at]} type="datetime-local" label="Expire at" />
+            <.input field={@form[:expires_at]} type="datetime-local" label="Expire at" />
             <footer>
               <.button phx-disable-with="Saving..." variant="primary">Save Url</.button>
               <.button navigate={return_path(@current_scope, @return_to, @url)}>Cancel</.button>

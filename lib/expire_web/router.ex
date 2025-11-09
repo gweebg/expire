@@ -11,6 +11,7 @@ defmodule ExpireWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_scope_for_user
+    plug ExpireWeb.Plugs.EnsureAnonId
   end
 
   pipeline :api do
@@ -63,7 +64,11 @@ defmodule ExpireWeb.Router do
     pipe_through [:browser]
 
     live_session :current_user,
-      on_mount: [{ExpireWeb.UserAuth, :mount_current_scope}, {ExpireWeb.LiveHooks.CurrentPath, :current_path}] do
+      on_mount: [
+        {ExpireWeb.UserAuth, :mount_current_scope},
+        {ExpireWeb.LiveHooks.CurrentPath, :current_path},
+        {ExpireWeb.LiveHooks.Anon, :anon}
+      ] do
       live "/users/register", UserLive.Registration, :new
       live "/users/log-in", UserLive.Login, :new
       live "/users/log-in/:token", UserLive.Confirmation, :new

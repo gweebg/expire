@@ -4,9 +4,9 @@ defmodule ExpireWeb.UrlLiveTest do
   import Phoenix.LiveViewTest
   import Expire.UrlsFixtures
 
-  @create_attrs %{short: "some short", long: "some long", expire_at: "2025-09-25T21:00:00Z"}
-  @update_attrs %{short: "some updated short", long: "some updated long", expire_at: "2025-09-26T21:00:00Z"}
-  @invalid_attrs %{short: nil, long: nil, expire_at: nil}
+  @create_attrs %{short: "some short", long: "some long", expires_at: "2025-09-25T21:00:00Z"}
+  @update_attrs %{short: "some updated short", long: "some updated long", expires_at: "2025-09-26T21:00:00Z"}
+  @invalid_attrs %{short: nil, long: nil, expires_at: nil}
 
   setup :register_and_log_in_user
 

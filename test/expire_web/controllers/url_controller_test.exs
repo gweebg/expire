@@ -7,14 +7,14 @@ defmodule ExpireWeb.UrlControllerTest do
   @create_attrs %{
     short: "some short",
     long: "some long",
-    expire_at: ~U[2025-09-26 17:59:00Z]
+    expires_at: ~U[2025-09-26 17:59:00Z]
   }
   @update_attrs %{
     short: "some updated short",
     long: "some updated long",
-    expire_at: ~U[2025-09-27 17:59:00Z]
+    expires_at: ~U[2025-09-27 17:59:00Z]
   }
-  @invalid_attrs %{short: nil, long: nil, expire_at: nil}
+  @invalid_attrs %{short: nil, long: nil, expires_at: nil}
 
   setup :register_and_log_in_user
 
@@ -38,7 +38,7 @@ defmodule ExpireWeb.UrlControllerTest do
 
       assert %{
                "id" => ^id,
-               "expire_at" => "2025-09-26T17:59:00Z",
+               "expires_at" => "2025-09-26T17:59:00Z",
                "long" => "some long",
                "short" => "some short"
              } = json_response(conn, 200)["data"]
@@ -61,7 +61,7 @@ defmodule ExpireWeb.UrlControllerTest do
 
       assert %{
                "id" => ^id,
-               "expire_at" => "2025-09-27T17:59:00Z",
+               "expires_at" => "2025-09-27T17:59:00Z",
                "long" => "some updated long",
                "short" => "some updated short"
              } = json_response(conn, 200)["data"]
