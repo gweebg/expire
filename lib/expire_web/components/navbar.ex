@@ -23,7 +23,7 @@ defmodule ExpireWeb.Components.Navbar do
           </div>
 
           <%!-- Logo --%>
-          <div class="flex-none">
+          <div class="flex-1 lg:flex-none flex justify-center lg:justify-start">
             <a href="/" class="flex items-center gap-2">
               <img src={~p"/images/logo.svg"} width="36" alt="Logo" />
               <span class="text-sm font-semibold hidden sm:inline">Expire</span>
@@ -33,39 +33,21 @@ defmodule ExpireWeb.Components.Navbar do
           <%!-- Desktop Navigation --%>
           <div class="flex-1 hidden lg:flex lg:ml-8">
             <ul class="flex items-center gap-6">
-              <li>
-                <a
-                  href="/urls"
-                  class={[
-                    "text-sm transition-colors",
-                    if(is_active?(@current_path, "/urls"),
-                      do: "text-base-content font-semibold",
-                      else: "text-base-content/60 hover:text-base-content"
-                    )
-                  ]}
-                >
-                  Shortener
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/secrets"
-                  class={[
-                    "text-sm transition-colors",
-                    if(is_active?(@current_path, "/secrets"),
-                      do: "text-base-content font-semibold",
-                      else: "text-base-content/60 hover:text-base-content"
-                    )
-                  ]}
-                >
-                  Secrets
-                </a>
-              </li>
+              <.navigation_item
+                path="/urls"
+                label="Shortener"
+                current_path={@current_path}
+              />
+              <.navigation_item
+                path="/secrets"
+                label="Secrets"
+                current_path={@current_path}
+              />
             </ul>
           </div>
 
           <%!-- Right side actions --%>
-          <div class="flex-none flex items-center gap-2">
+          <div class="hidden lg:flex items-center gap-2">
             <Layouts.theme_toggle />
 
             <%= if @current_scope do %>
@@ -79,7 +61,7 @@ defmodule ExpireWeb.Components.Navbar do
                 </label>
                 <ul
                   tabindex="0"
-                  class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                  class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
                 >
                   <li>
                     <.link href={~p"/users/settings"}>Settings</.link>
@@ -90,7 +72,7 @@ defmodule ExpireWeb.Components.Navbar do
                 </ul>
               </div>
             <% else %>
-              <a href="/users/log-in" class="btn btn-primary btn-sm">
+              <a href="/users/log-in" class="btn btn-primary">
                 Sign In
               </a>
             <% end %>
@@ -108,32 +90,84 @@ defmodule ExpireWeb.Components.Navbar do
               <span class="text-lg font-semibold">Expire</span>
             </a>
           </li>
+          <.navigation_item
+                path="/urls"
+                label="Shortener"
+                icon="hero-link"
+                current_path={@current_path}
+                mobile={true}
+              />
+          <.navigation_item
+                path="/secrets"
+                label="Secrets"
+                icon="hero-lock-closed"
+                current_path={@current_path}
+                mobile={true}
+              />
+          <div class="divider"/>
           <li>
-            <a href="/shortener">
-              <.icon name="hero-link" class="size-5" /> Shortener
-            </a>
-          </li>
-          <li>
-            <a href="/secrets">
-              <.icon name="hero-lock-closed" class="size-5" /> Secrets
-            </a>
+            <.link href={~p"/users/settings"}>
+              <.icon name="hero-cog-6-tooth" class="size-5" /> Settings
+            </.link>
           </li>
           <%= if @current_scope do %>
-            <div class="divider"></div>
-            <li>
-              <a href="/settings">
-                <.icon name="hero-cog-6-tooth" class="size-5" /> Settings
-              </a>
-            </li>
-            <li>
-              <a href="/users/log_out" method="delete">
-                <.icon name="hero-arrow-right-on-rectangle" class="size-5" /> Sign Out
-              </a>
-            </li>
+            <div class="divider mt-auto"></div>
+            <div class="flex flex-row gap-2 justify-between">
+              <Layouts.theme_toggle />
+              <li>
+                <.link href={~p"/users/log-out"} method="delete">
+                  <.icon name="hero-arrow-right-on-rectangle" class="size-5" /> Sign Out
+                </.link>
+              </li>
+            </div>
           <% end %>
         </ul>
       </div>
     </div>
+    """
+  end
+
+  attr :path, :string, required: true
+  attr :label, :string, required: true
+  attr :icon, :string, default: nil
+  attr :current_path, :string, required: true
+  attr :mobile, :boolean, default: false
+
+  defp navigation_item(%{mobile: false} = assigns) do
+    ~H"""
+      <li>
+        <a
+          href={@path}
+          class={[
+            "text-sm transition-colors",
+            if(is_active?(@current_path, @path),
+              do: "text-base-content font-semibold",
+              else: "text-base-content/60 hover:text-base-content"
+            )
+          ]}
+        >
+          {@label}
+        </a>
+      </li>
+    """
+  end
+
+  defp navigation_item(%{mobile: true} = assigns) do
+    ~H"""
+      <li>
+        <a
+          href={@path}
+          class={[
+            "text-sm transition-colors",
+            if(is_active?(@current_path, @path),
+              do: "menu-active",
+              else: ""
+            )
+          ]}
+        >
+          <.icon :if={@icon} name={@icon} class="size-5"/> {@label}
+        </a>
+      </li>
     """
   end
 
