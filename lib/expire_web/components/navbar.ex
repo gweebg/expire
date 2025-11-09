@@ -14,7 +14,7 @@ defmodule ExpireWeb.Components.Navbar do
 
       <div class="drawer-content flex flex-col">
         <%!-- Navbar --%>
-        <div class="navbar bg-base-100 px-4 lg:px-56 lg:mt-4">
+        <div class="navbar bg-base-200 px-4 lg:px-56 lg:mt-4">
           <%!-- Mobile menu button --%>
           <div class="flex-none lg:hidden">
             <label for="navbar-drawer" class="btn btn-square btn-ghost">
@@ -61,7 +61,7 @@ defmodule ExpireWeb.Components.Navbar do
                 </label>
                 <ul
                   tabindex="0"
-                  class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
+                  class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                 >
                   <li>
                     <.link href={~p"/users/settings"}>Settings</.link>
@@ -83,7 +83,7 @@ defmodule ExpireWeb.Components.Navbar do
       <%!-- Mobile Drawer --%>
       <div class="drawer-side z-50">
         <label for="navbar-drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-80 min-h-full bg-base-200">
+        <ul class="menu p-4 w-80 min-h-full bg-base-100">
           <li class="mb-4">
             <a href="/" class="flex items-center gap-2">
               <img src={~p"/images/logo.svg"} width="36" alt="Logo" />
@@ -91,36 +91,40 @@ defmodule ExpireWeb.Components.Navbar do
             </a>
           </li>
           <.navigation_item
-                path="/urls"
-                label="Shortener"
-                icon="hero-link"
-                current_path={@current_path}
-                mobile={true}
-              />
+            path="/urls"
+            label="Shortener"
+            icon="hero-link"
+            current_path={@current_path}
+            mobile={true}
+          />
           <.navigation_item
-                path="/secrets"
-                label="Secrets"
-                icon="hero-lock-closed"
-                current_path={@current_path}
-                mobile={true}
-              />
-          <div class="divider"/>
+            path="/secrets"
+            label="Secrets"
+            icon="hero-lock-closed"
+            current_path={@current_path}
+            mobile={true}
+          />
+          <div class="divider" />
           <li>
             <.link href={~p"/users/settings"}>
               <.icon name="hero-cog-6-tooth" class="size-5" /> Settings
             </.link>
           </li>
-          <%= if @current_scope do %>
-            <div class="divider mt-auto"></div>
-            <div class="flex flex-row gap-2 justify-between">
-              <Layouts.theme_toggle />
+          <div class="divider mt-auto"></div>
+          <div class="flex flex-row gap-2 justify-between">
+            <Layouts.theme_toggle />
+            <%= if @current_scope do %>
               <li>
                 <.link href={~p"/users/log-out"} method="delete">
                   <.icon name="hero-arrow-right-on-rectangle" class="size-5" /> Sign Out
                 </.link>
               </li>
-            </div>
-          <% end %>
+            <% else %>
+              <a href="/users/log-in" class="btn btn-primary">
+                Sign In
+              </a>
+            <% end %>
+          </div>
         </ul>
       </div>
     </div>
@@ -135,39 +139,39 @@ defmodule ExpireWeb.Components.Navbar do
 
   defp navigation_item(%{mobile: false} = assigns) do
     ~H"""
-      <li>
-        <a
-          href={@path}
-          class={[
-            "text-sm transition-colors",
-            if(is_active?(@current_path, @path),
-              do: "text-base-content font-semibold",
-              else: "text-base-content/60 hover:text-base-content"
-            )
-          ]}
-        >
-          {@label}
-        </a>
-      </li>
+    <li>
+      <a
+        href={@path}
+        class={[
+          "text-sm transition-colors",
+          if(is_active?(@current_path, @path),
+            do: "text-base-content font-semibold",
+            else: "text-base-content/60 hover:text-base-content"
+          )
+        ]}
+      >
+        {@label}
+      </a>
+    </li>
     """
   end
 
   defp navigation_item(%{mobile: true} = assigns) do
     ~H"""
-      <li>
-        <a
-          href={@path}
-          class={[
-            "text-sm transition-colors",
-            if(is_active?(@current_path, @path),
-              do: "menu-active",
-              else: ""
-            )
-          ]}
-        >
-          <.icon :if={@icon} name={@icon} class="size-5"/> {@label}
-        </a>
-      </li>
+    <li>
+      <a
+        href={@path}
+        class={[
+          "text-sm transition-colors",
+          if(is_active?(@current_path, @path),
+            do: "menu-active",
+            else: ""
+          )
+        ]}
+      >
+        <.icon :if={@icon} name={@icon} class="size-5" /> {@label}
+      </a>
+    </li>
     """
   end
 

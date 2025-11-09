@@ -1,10 +1,47 @@
 <Layouts.app flash={@flash} current_scope={@current_scope} current_path={@current_path}>
   <.header>
-    Listing Urls
-    <%!-- <:actions>
-      <.button variant="primary" navigate={~p"/urls/new"}>
-        <.icon name="hero-plus" /> New Url
-      </.button>
-    </:actions> --%>
+    URL Shortener
   </.header>
+
+  <section class="flex flex-col gap-2">
+    <%!-- URL Input --%>
+    <div class="card bg-base-100">
+      <div class="card-body">
+        <div class="join">
+          <div class="w-full">
+            <label class="input w-full">
+              <.icon name="hero-link" />
+              <input required placeholder="Type an URL" />
+            </label>
+          </div>
+          <button class="btn join-item">Shorten</button>
+        </div>
+      </div>
+    </div>
+
+    <%!-- Results --%>
+    <div class="card bg-base-100">
+      <div class="card-body">
+        <div class="card-title">
+          Shortened URL:
+        </div>
+        <div class="join">
+          <div class="w-full">
+            <label class="input w-full">
+              <input type="search" required readonly value="https://share.enemyless.com/aCd" />
+            </label>
+          </div>
+          <button class="btn join-item">
+            <.icon name="hero-clipboard" />
+          </button>
+        </div>
+        <div class="flex justify-center">
+          <div class="flex flex-row gap-1 items-center text-xs">
+            <p>This URL expires in</p>
+            <span class="badge badge-sm badge-primary">3 months</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layouts.app>
