@@ -32,7 +32,19 @@ defmodule Expire.Urls do
   end
 
   @doc """
-  Returns the list of urls.
+  Returns the list of all urls.
+
+  ## Examples
+
+      iex> list_urls()
+      [%Url{}, ...]
+  """
+  def list_urls() do
+    Repo.all(Url)
+  end
+
+  @doc """
+  Returns the list of urls for a given user.
 
   ## Examples
 
@@ -40,8 +52,26 @@ defmodule Expire.Urls do
       [%Url{}, ...]
 
   """
-  def list_urls(%Scope{} = scope) do
+  def list_urls_by_user(%Scope{} = scope) do
     Repo.all_by(Url, user_id: scope.user.id)
+  end
+
+  @doc """
+  Returns the list of all alerts of a given anon_id.
+
+  ## Examples
+
+      iex> list_urls_by_device(anon_id)
+      [%Url{}, ...]
+  """
+  def list_urls_by_device(anon_id) when is_binary(anon_id) do
+    hash = anon_hash(anon_id)
+    Repo.all_by(Url, anon_id: hash)
+  end
+
+  defp anon_hash(anon_id) when is_binary(anon_id) do
+    salt = Application.fetch_env!(:expire, :anon_salt)
+    :crypto.hash(:sha256, salt <> ":" <> Ecto.UUID.dump!(anon_id))
   end
 
   @doc """
@@ -77,12 +107,11 @@ defmodule Expire.Urls do
       nil
   """
   def get_url_by_short(short_name) when is_binary(short_name) do
-    Url
-    |> Repo.get_by(short: short_name)
+    Repo.get_by(Url, short: short_name)
   end
 
   @doc """
-  Creates a url.
+  Creates a url by a given user.
 
   ## Examples
 
@@ -93,19 +122,31 @@ defmodule Expire.Urls do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_url(scope, attrs) do
+  def create_url(scope, anon_id, attrs) do
+    hash = anon_hash(anon_id)
+
     with {:ok, u = %Url{}} <-
            %Url{}
            |> Url.changeset(attrs, scope)
+           |> Ecto.Changeset.put_change(:anon_id, hash)
            |> Repo.insert(),
          {:ok, url = %Url{}} <-
            u
            |> Url.short_changeset(%{short: Base62.encode(u.id)})
            |> Repo.update() do
-      # broadcast_url(scope, {:created, url})
-
       {:ok, url}
     end
+  end
+
+  @doc """
+  Claim all created urls by an anon_id to a user on its login/sign up.
+  """
+  def claim_anon_urls(%{user: user}, anon_id) do
+    hash = anon_hash(anon_id)
+
+    Url
+    |> where([u], is_nil(u.user_id) and u.anon_id == ^hash)
+    |> Repo.update_all(set: [user_id: user.id])
   end
 
   @doc """
@@ -163,9 +204,7 @@ defmodule Expire.Urls do
       %Ecto.Changeset{data: %Url{}}
 
   """
-  def change_url(%Scope{} = scope, %Url{} = url, attrs \\ %{}) do
-    true = url.user_id == scope.user.id
-
+  def change_url(scope, %Url{} = url, attrs \\ %{}) do
     Url.changeset(url, attrs, scope)
   end
 end

@@ -24,7 +24,7 @@ defmodule Expire.Urls.Url do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_format(:long, @url_regex, message: "must be a valid url (protocol included)")
-    |> validate_change(:expires_at, &in_future/2)
+    # |> validate_change(:expires_at, &in_future/2)
     |> maybe_put_user(user_scope)
   end
 
