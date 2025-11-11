@@ -279,6 +279,17 @@ defmodule ExpireWeb.UserAuth do
     end
   end
 
+  @doc """
+  Plug for possibly storing the current path for later redirection.
+  """
+  def ensure_return_to(conn, _opts) do
+    if is_nil(conn.assigns.current_scope) do
+      maybe_store_return_to(conn)
+    else
+      conn
+    end
+  end
+
   defp maybe_store_return_to(%{method: "GET"} = conn) do
     put_session(conn, :user_return_to, current_path(conn))
   end

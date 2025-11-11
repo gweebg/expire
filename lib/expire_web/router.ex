@@ -61,7 +61,7 @@ defmodule ExpireWeb.Router do
   end
 
   scope "/", ExpireWeb do
-    pipe_through [:browser]
+    pipe_through [:browser, :ensure_return_to]
 
     live_session :current_user,
       on_mount: [

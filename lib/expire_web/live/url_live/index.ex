@@ -18,6 +18,7 @@ defmodule ExpireWeb.UrlLive.Index do
      socket
      |> assign(:page_title, "Shortener")
      |> assign(:form, to_form(empty_url))
+     |> assign(:current, nil)
      |> stream(:urls, maybe_list_urls(search_key))}
   end
 
@@ -46,6 +47,7 @@ defmodule ExpireWeb.UrlLive.Index do
           socket
           |> put_flash(:info, "success!")
           |> assign(:form, to_form(Urls.change_url(scope, %Url{})))
+          |> assign(:current, url)
           |> stream(:urls, [url])}
 
       {:error, %Ecto.Changeset{} = changeset} ->

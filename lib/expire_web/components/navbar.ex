@@ -120,9 +120,9 @@ defmodule ExpireWeb.Components.Navbar do
                 </.link>
               </li>
             <% else %>
-              <a href="/users/log-in" class="btn btn-primary">
+              <.link href={~p"/users/log-in"} class="btn btn-primary">
                 Sign In
-              </a>
+              </.link>
             <% end %>
           </div>
         </ul>

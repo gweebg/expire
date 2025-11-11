@@ -6,30 +6,10 @@
 
   <section class="flex flex-col gap-2">
     <%!-- URL Input --%>
-    <%!-- <div class="card bg-base-100">
-      <div class="card-body">
-        <div class="join">
-          <div class="w-full">
-            <label class="input w-full">
-              <.icon name="hero-link" />
-              <input required placeholder="Type an URL" />
-            </label>
-          </div>
-          <select class="select join-item w-32">
-            <option disabled selected>Expiry</option>
-            <option>1 week</option>
-            <option>1 month</option>
-            <option>Never</option>
-          </select>
-          <button class="btn join-item">Shorten</button>
-        </div>
-      </div>
-    </div> --%>
-
     <div class="card bg-base-100">
       <div class="card-body">
        <.form for={@form} id="url-form" phx-change="validate" phx-submit="save">
-          <div class="join w-full">
+          <div class="flex flex-row gap-2 w-full items-center">
             <div class="flex-1">
               <.input
                 field={@form[:long]}
@@ -44,16 +24,16 @@
               type="select"
               options={[{"1 week", "1_week"}, {"1 month", "1_month"}, {"Never", "never"}]}
               prompt="Expiry"
-              class="select join-item w-32"
+              class="select"
             />
-            <button type="submit" class="btn join-item">Shorten</button>
+            <button type="submit" class="btn btn-primary mb-2">Shorten</button>
           </div>
         </.form>
       </div>
     </div>
 
-    <%!-- Results --%>
-    <div class="card bg-base-100">
+    <%!-- Result --%>
+    <div :if={@current} class="card bg-base-100">
       <div class="card-body">
         <div class="card-title">
           Shortened URL:
@@ -61,7 +41,7 @@
         <div class="join">
           <div class="w-full">
             <label class="input w-full">
-              <input type="search" required readonly value="https://share.enemyless.com/aCd" />
+              <input type="search" required readonly value={"#{ExpireWeb.Endpoint.url()}/#{@current.short}"} />
             </label>
           </div>
           <button class="btn join-item">
@@ -73,6 +53,18 @@
             <p>This URL expires in</p>
             <span class="badge badge-sm badge-primary">3 months</span>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <%!-- History --%>
+    <div :if={@streams.urls} class="card bg-base-100">
+      <div class="card-body">
+        <div class="card-title">
+          History:
+        </div>
+        <div :for={{_, url} <- @streams.urls}>
+          {"#{ExpireWeb.Endpoint.url()}/#{url.short}"}
         </div>
       </div>
     </div>
