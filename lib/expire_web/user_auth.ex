@@ -34,6 +34,7 @@ defmodule ExpireWeb.UserAuth do
   """
   def log_in_user(conn, user, params \\ %{}) do
     user_return_to = get_session(conn, :user_return_to)
+    IO.inspect(user_return_to, label: "return to")
 
     conn
     |> create_or_extend_session(user, params)
@@ -291,6 +292,7 @@ defmodule ExpireWeb.UserAuth do
   end
 
   defp maybe_store_return_to(%{method: "GET"} = conn) do
+      IO.inspect("stored 'return to' with value: #{current_path(conn)}")
     put_session(conn, :user_return_to, current_path(conn))
   end
 
