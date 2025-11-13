@@ -67,7 +67,8 @@ defmodule ExpireWeb.Router do
       on_mount: [
         {ExpireWeb.UserAuth, :mount_current_scope},
         {ExpireWeb.LiveHooks.CurrentPath, :current_path},
-        {ExpireWeb.LiveHooks.Anon, :anon}
+        {ExpireWeb.LiveHooks.Anon, :anon},
+        {ExpireWeb.LiveHooks.ClaimUrls, :claim_urls}
       ] do
       live "/users/register", UserLive.Registration, :new
       live "/users/log-in", UserLive.Login, :new
