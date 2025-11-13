@@ -45,7 +45,7 @@ defmodule ExpireWeb.UrlLive.Index do
       {:ok, url} ->
         {:noreply,
           socket
-          |> put_flash(:info, "success!")
+          |> Toast.put_toast(:success, "Changes saved!", duration: 1000)
           |> assign(:form, to_form(Urls.change_url(scope, %Url{})))
           |> assign(:current, url)
           |> stream_insert(:urls, url)}

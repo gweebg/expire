@@ -50,7 +50,8 @@ defmodule ExpireWeb.Layouts do
       </div>
     </main>
 
-    <.flash_group flash={@flash} />
+    <%!-- <.flash_group flash={@flash} /> --%>
+    <Toast.toast_group flash={@flash} />
     """
   end
 

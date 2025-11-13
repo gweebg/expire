@@ -141,7 +141,7 @@ defmodule Expire.Urls do
   @doc """
   Claim all created urls by an anon_id to a user on its login/sign up.
   """
-  def claim_anon_urls(%{user: user}, anon_id) do
+  def claim_anon_urls(user, anon_id) do
     hash = anon_hash(anon_id)
 
     Url
