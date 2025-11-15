@@ -49,9 +49,7 @@ defmodule ExpireWeb.Layouts do
         {render_slot(@inner_block)}
       </div>
     </main>
-
-    <%!-- <.flash_group flash={@flash} /> --%>
-    <Toast.toast_group flash={@flash} />
+    <.flash_group flash={@flash} />
     """
   end
 

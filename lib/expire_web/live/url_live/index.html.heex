@@ -1,14 +1,14 @@
 <Layouts.app flash={@flash} current_scope={@current_scope} current_path={@current_path}>
   <.header>
-    <h2 class="text-2xl font-bold"> Shortener </h2>
-    <p class="text-xs"> Type you URL bellow to get a shorter version of it.</p>
+    <h2 class="text-2xl font-bold">Shortener</h2>
+    <p class="text-xs">Type you link bellow to get a shorter version of it.</p>
   </.header>
 
   <section class="flex flex-col gap-2">
     <%!-- URL Input --%>
     <div class="card bg-base-100">
       <div class="card-body">
-       <.form for={@form} id="url-form" phx-change="validate" phx-submit="save">
+        <.form for={@form} id="url-form" phx-change="validate" phx-submit="save">
           <div class="flex flex-row gap-2 w-full items-center">
             <div class="flex-1">
               <.input
@@ -41,7 +41,13 @@
         <div class="join">
           <div class="w-full">
             <label class="input w-full">
-              <input type="search" required readonly value={"#{ExpireWeb.Endpoint.url()}/#{@current.short}"} />
+              <input
+                id="result-input"
+                type="search"
+                required
+                readonly
+                value={"#{ExpireWeb.Endpoint.url()}/#{@current.short}"}
+              />
             </label>
           </div>
           <button class="btn join-item">
@@ -50,7 +56,7 @@
         </div>
         <div class="flex justify-center">
           <div class="flex flex-row gap-1 items-center text-xs">
-            <p>This URL expires in</p>
+            <p>This link expires in</p>
             <span class="badge badge-sm badge-primary">3 months</span>
           </div>
         </div>
@@ -58,15 +64,20 @@
     </div>
 
     <%!-- History --%>
-    <div :if={@streams.urls} class="card bg-base-100">
-      <div class="card-body">
-        <div class="card-title">
-          History:
-        </div>
-        <div :for={{_, url} <- @streams.urls}>
-          {"#{ExpireWeb.Endpoint.url()}/#{url.short}"}
-        </div>
+    <ul class="list bg-base-100 rounded-box shadow-md max-h-[512px]">
+      <div class="flex flex-ro justify-between">
+        <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Your recently added links</li>
+        <li class="p-4 pb-2 text-xs opacity-60 tracking-wide btn btn-link">Clear History</li>
       </div>
-    </div>
+
+      <div id="urls-history" phx-update="stream" class="overflow-y-auto">
+        <ExpireWeb.Components.Urls.UrlHistoryItem.item
+          :for={{id, url} <- @streams.urls}
+          id={id}
+          current_scope={@current_scope}
+          url={url}
+        />
+      </div>
+    </ul>
   </section>
 </Layouts.app>

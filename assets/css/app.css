@@ -6,7 +6,6 @@
 @source "../js";
 @source "../../lib/expire_web";
 
-@import "../../deps/toast/assets/css/toast.css";
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */
 @plugin "../vendor/heroicons";
@@ -16,7 +15,6 @@
    Make sure to look at the daisyUI changelog: https://daisyui.com/docs/changelog/ */
 @plugin "../vendor/daisyui" {
   themes: false;
-  exclude: toast;
 }
 
 /* daisyUI theme plugin. You can update this file by fetching the latest version with:

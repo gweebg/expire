@@ -13,13 +13,15 @@ defmodule ExpireWeb.UrlLive.Index do
 
     search_key = socket.assigns.current_scope || socket.assigns.anon_id
     empty_url = Urls.change_url(socket.assigns.current_scope, %Url{})
+    urls = maybe_list_urls(search_key)
 
     {:ok,
      socket
      |> assign(:page_title, "Shortener")
      |> assign(:form, to_form(empty_url))
      |> assign(:current, nil)
-     |> stream(:urls, maybe_list_urls(search_key))}
+     |> assign(:urls_empty?, urls == [])
+     |> stream(:urls, urls)}
   end
 
   defp maybe_list_urls(nil), do: []
@@ -45,9 +47,10 @@ defmodule ExpireWeb.UrlLive.Index do
       {:ok, url} ->
         {:noreply,
           socket
-          |> Toast.put_toast(:success, "Changes saved!", duration: 1000)
+          |> put_flash(:info, "Changes saved!")
           |> assign(:form, to_form(Urls.change_url(scope, %Url{})))
           |> assign(:current, url)
+          |> assign(:urls_empty?, false)
           |> stream_insert(:urls, url)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
