@@ -42,3 +42,5 @@ npm-debug.log
 # Environment
 .env*
 .envrc*
+mise.local.*
+
