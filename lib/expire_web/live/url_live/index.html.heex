@@ -9,73 +9,76 @@
     <div class="card bg-base-100">
       <div class="card-body">
         <.form for={@form} id="url-form" phx-change="validate" phx-submit="save">
-          <div class="flex flex-row gap-2 w-full items-center">
-            <div class="flex-1">
-              <.input
-                field={@form[:long]}
-                type="url"
-                placeholder="Type an URL"
-                required
-                class="input w-full"
-              />
-            </div>
+          <div class="flex-1">
             <.input
-              field={@form[:expires_in]}
-              type="select"
-              options={[{"1 week", "1_week"}, {"1 month", "1_month"}, {"Never", "never"}]}
-              prompt="Expiry"
-              class="select"
+              field={@form[:long]}
+              type="url"
+              placeholder="Type a valid link"
+              required
+              class="input w-full"
             />
-            <button type="submit" class="btn btn-primary mb-2">Shorten</button>
+          </div>
+          <div class="flex flex-row gap-2 w-full items-start mt-2">
+            <div class="flex flex-row gap-2 items-center justify-between w-full">
+              <div class="flex flex-row gap-2">
+                <label class="label">
+                  <input type="checkbox" class="checkbox" /> Enable Statistics
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary mt-1">Shorten</button>
+            </div>
           </div>
         </.form>
       </div>
     </div>
 
     <%!-- Result --%>
-    <div :if={@current} class="card bg-base-100">
+    <%!-- <div :if={@current} class="card bg-base-100">
       <div class="card-body">
         <div class="card-title">
-          Shortened URL:
+          Shortened:
         </div>
-        <div class="join">
-          <div class="w-full">
-            <label class="input w-full">
-              <input
-                id="result-input"
-                type="search"
-                required
-                readonly
-                value={"#{ExpireWeb.Endpoint.url()}/#{@current.short}"}
-              />
-            </label>
-          </div>
-          <button class="btn join-item">
+        <div class="w-full flex flex-row gap-2">
+          <label class="input w-full">
+            <input
+              id="result-input"
+              type="search"
+              required
+              readonly
+              value={"#{ExpireWeb.Endpoint.url()}/#{@current.short}"}
+            />
+          </label>
+          <button class="btn btn-square btn-primary btn-soft">
             <.icon name="hero-clipboard" />
           </button>
         </div>
-        <div class="flex justify-center">
-          <div class="flex flex-row gap-1 items-center text-xs">
-            <p>This link expires in</p>
-            <span class="badge badge-sm badge-primary">3 months</span>
-          </div>
-        </div>
       </div>
-    </div>
+    </div> --%>
 
     <%!-- History --%>
     <ul class="list bg-base-100 rounded-box shadow-md max-h-[512px]">
       <div class="flex flex-ro justify-between">
         <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Your recently added links</li>
-        <li class="p-4 pb-2 text-xs opacity-60 tracking-wide btn btn-link">Clear History</li>
+        <li
+          class="p-4 pb-2 text-xs opacity-60 tracking-wide btn btn-link"
+          phx-click="clear_history"
+        >
+          Clear History
+        </li>
       </div>
 
-      <div id="urls-history" phx-update="stream" class="overflow-y-auto">
-        <ExpireWeb.Components.Urls.UrlHistoryItem.item
+      <%!-- Empty message if no items in stream. --%>
+      <div :if={@urls_empty?} class="p-8 text-center text-sm opacity-60 tracking-wide">
+        Shorten your first link to get started!
+      </div>
+
+      <div id="urls-history" phx-update="stream" class="overflow-y-visible">
+        <UrlHistoryItem.item
           :for={{id, url} <- @streams.urls}
-          id={id}
           current_scope={@current_scope}
           url={url}
+          id={id}
         />
       </div>
     </ul>

@@ -1,3 +1,5 @@
+import ClipboardJS from "clipboard";
+
 let Hooks = {}
 
 Hooks.Flash = {
@@ -11,6 +13,29 @@ Hooks.Flash = {
     })
   },
   destroyed(){ clearTimeout(this.timer) }
+}
+
+Hooks.Clipboard = {
+  mounted() {
+    this.clipboard = new ClipboardJS(this.el);
+
+    this.clipboard.on("success", (e) => {
+      e.clearSelection();
+
+      const swap = this.el.querySelector('[data-role="clipboard-swap"]');
+      if (!swap) return;
+
+      swap.checked = true;
+
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        swap.checked = false;
+      }, 3000);
+    });
+  },
+  destroyed() {
+    if (this.clipboard) this.clipboard.destroy();
+  }
 }
 
 export default Hooks
