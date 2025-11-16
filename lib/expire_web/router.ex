@@ -24,7 +24,7 @@ defmodule ExpireWeb.Router do
     get "/", PageController, :home
   end
 
-  scope "/url", ExpireWeb do
+  scope "/u", ExpireWeb do
     pipe_through :api
     get "/:id", UrlController, :show
   end

@@ -5,7 +5,7 @@ defmodule ExpireWeb.Components.Urls.UrlHistoryItem do
   alias Expire.Urls.Url
 
   attr :current_scope, :map, default: nil
-  attr :url, :map, required: true
+  attr :url, Url, required: true
   attr :id, :string, required: true
 
   def item(assigns) do
@@ -22,16 +22,32 @@ defmodule ExpireWeb.Components.Urls.UrlHistoryItem do
         />
       </div>
       <div class="min-w-0 flex-1">
-        <a class="link link-hover" href={@short_url}>
+        <a class="link link-hover" href={@short_url} target="blank">
           {@short_url}
         </a>
         <div class="text-xs font-semibold opacity-60 truncate">
           {@url.long}
         </div>
       </div>
-      <button class="btn btn-square btn-ghost">
-        <.icon name="hero-clipboard" class="size-5" />
-      </button>
+      <div class="tooltip relative z-50" data-tip="Copy Link">
+        <button
+          class="btn btn-square btn-ghost"
+          id={"copy-#{@id}"}
+          phx-hook="Clipboard"
+          data-clipboard-text={@short_url}
+        >
+          <label class="swap swap-flip">
+            <input type="checkbox" data-role="clipboard-swap" />
+
+            <div class="swap-on">
+              <.icon name="hero-check" class="size-5 text-primary" />
+            </div>
+            <div class="swap-off">
+              <.icon name="hero-clipboard" class="size-5" />
+            </div>
+          </label>
+        </button>
+      </div>
     </li>
     """
   end
@@ -46,5 +62,5 @@ defmodule ExpireWeb.Components.Urls.UrlHistoryItem do
     "https://icons.duckduckgo.com/ip3/#{domain}"
   end
 
-  defp short_url(%{short: code} = %Url{}), do: "#{ExpireWeb.Endpoint.url()}/#{code}"
+  defp short_url(%{short: code} = %Url{}), do: "#{ExpireWeb.Endpoint.url()}/u/#{code}"
 end

@@ -7,7 +7,7 @@ defmodule Expire.Urls do
   alias Expire.Repo
 
   alias Expire.Urls.{Url, Base62}
-  alias Expire.Accounts.Scope
+  alias Expire.Accounts.{Scope, User}
 
   @doc """
   Subscribes to scoped notifications about any url changes.
@@ -193,6 +193,21 @@ defmodule Expire.Urls do
       broadcast_url(scope, {:deleted, url})
       {:ok, url}
     end
+  end
+
+  @doc """
+  Deletes all URLs matching a given user scope or anonymous identifier.
+  """
+  def delete_all_urls(%Scope{user: %User{} = user}) do
+    Url
+    |> where([u], u.user_id == ^user.id)
+    |> Repo.delete_all()
+  end
+
+  def delete_all_urls(anon_id) when is_binary(anon_id) do
+    Url
+    |> where([u], u.anon_id == ^anon_id)
+    |> Repo.delete_all()
   end
 
   @doc """
