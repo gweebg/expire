@@ -5,7 +5,7 @@ defmodule Expire.Repo.Migrations.CreateUrls do
     create table(:urls) do
       add :short, :string
       add :long, :string
-      add :expires_at, :utc_datetime
+      add :collect_stats, :boolean, null: false, default: false
 
       add :user_id, references(:users, type: :id, on_delete: :delete_all)
       add :anon_id, :binary
