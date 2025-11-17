@@ -9,7 +9,7 @@ defmodule Expire.UrlsTest do
     import Expire.AccountsFixtures, only: [user_scope_fixture: 0]
     import Expire.UrlsFixtures
 
-    @invalid_attrs %{short: nil, long: nil, expires_at: nil}
+    @invalid_attrs %{long: nil, expires_at: nil}
 
     test "list_urls/1 returns all scoped urls" do
       scope = user_scope_fixture()

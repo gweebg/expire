@@ -20,7 +20,6 @@ defmodule ExpireWeb.UrlJSON do
       id: url.id,
       short: url.short,
       long: url.long,
-      expires_at: url.expires_at
     }
   end
 end
