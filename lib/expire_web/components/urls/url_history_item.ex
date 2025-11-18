@@ -29,6 +29,15 @@ defmodule ExpireWeb.Components.Urls.UrlHistoryItem do
           {@url.long}
         </div>
       </div>
+
+      <%!-- QR Code --%>
+      <div class="tooltip relative z-50" data-tip="QR Code">
+        <button class="btn btn-square btn-ghost">
+          <.icon name="hero-qr-code" class="size-5" />
+        </button>
+      </div>
+
+      <%!-- Copy button --%>
       <div class="tooltip relative z-50" data-tip="Copy Link">
         <button
           class="btn btn-square btn-ghost"
@@ -48,6 +57,20 @@ defmodule ExpireWeb.Components.Urls.UrlHistoryItem do
           </label>
         </button>
       </div>
+
+      <%!-- <div class="dropdown dropdown-hover">
+        <div tabindex="0" role="button" class="btn btn-square btn-ghost">
+          <.icon name="hero-ellipsis-vertical" class="size-5" />
+        </div>
+        <ul
+          tabindex="-1"
+          class="dropdown-content menu bg-base-100 rounded-box z-1 w-32 p-2 shadow-sm"
+        >
+          <li><a>QR Code</a></li>
+          <li><a>View</a></li>
+          <li><a class="btn btn-error btn-soft font-normal">Delete</a></li>
+        </ul>
+      </div> --%>
     </li>
     """
   end

@@ -57,7 +57,7 @@
     </div> --%>
 
     <%!-- History --%>
-    <ul class="list bg-base-100 rounded-box shadow-md max-h-[512px]">
+    <ul class="list bg-base-100 rounded-box shadow-md">
       <div class="flex flex-ro justify-between">
         <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Your recently added links</li>
         <li
@@ -73,7 +73,7 @@
         Shorten your first link to get started!
       </div>
 
-      <div id="urls-history" phx-update="stream" class="overflow-y-visible">
+      <div id="urls-history" phx-update="stream">
         <UrlHistoryItem.item
           :for={{id, url} <- @streams.urls}
           current_scope={@current_scope}
