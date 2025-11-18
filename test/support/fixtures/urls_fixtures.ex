@@ -10,12 +10,17 @@ defmodule Expire.UrlsFixtures do
   def url_fixture(scope, attrs \\ %{}) do
     attrs =
       Enum.into(attrs, %{
-        expires_at: ~U[2025-09-25 21:00:00Z],
-        long: "some long",
-        short: "some short"
+        long: "https://github.com/gweebg",
+        collect_stats: true
       })
 
-    {:ok, url} = Expire.Urls.create_url(scope, attrs)
+    {:ok, url} =
+      Expire.Urls.create_url(
+        scope,
+        Ecto.UUID.generate(),
+        attrs
+      )
+
     url
   end
 end
