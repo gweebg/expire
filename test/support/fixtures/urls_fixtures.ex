@@ -23,4 +23,21 @@ defmodule Expire.UrlsFixtures do
 
     url
   end
+
+  @doc """
+  Generate a click.
+  """
+  def click_fixture(attrs \\ %{}) do
+    {:ok, click} =
+      attrs
+      |> Enum.into(%{
+        country: "some country",
+        ip: "some ip",
+        referrer: "some referrer",
+        user_agent: "some user_agent"
+      })
+      |> Expire.Urls.create_click()
+
+    click
+  end
 end

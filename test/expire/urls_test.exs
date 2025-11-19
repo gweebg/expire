@@ -97,4 +97,64 @@ defmodule Expire.UrlsTest do
       assert %Ecto.Changeset{} = Urls.change_url(scope, url)
     end
   end
+
+  describe "clicks" do
+    alias Expire.Urls.Click
+
+    import Expire.UrlsFixtures
+
+    @invalid_attrs %{ip: nil, user_agent: nil, country: nil, referrer: nil}
+
+    test "list_clicks/0 returns all clicks" do
+      click = click_fixture()
+      assert Urls.list_clicks() == [click]
+    end
+
+    test "get_click!/1 returns the click with given id" do
+      click = click_fixture()
+      assert Urls.get_click!(click.id) == click
+    end
+
+    test "create_click/1 with valid data creates a click" do
+      valid_attrs = %{ip: "some ip", user_agent: "some user_agent", country: "some country", referrer: "some referrer"}
+
+      assert {:ok, %Click{} = click} = Urls.create_click(valid_attrs)
+      assert click.ip == "some ip"
+      assert click.user_agent == "some user_agent"
+      assert click.country == "some country"
+      assert click.referrer == "some referrer"
+    end
+
+    test "create_click/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Urls.create_click(@invalid_attrs)
+    end
+
+    test "update_click/2 with valid data updates the click" do
+      click = click_fixture()
+      update_attrs = %{ip: "some updated ip", user_agent: "some updated user_agent", country: "some updated country", referrer: "some updated referrer"}
+
+      assert {:ok, %Click{} = click} = Urls.update_click(click, update_attrs)
+      assert click.ip == "some updated ip"
+      assert click.user_agent == "some updated user_agent"
+      assert click.country == "some updated country"
+      assert click.referrer == "some updated referrer"
+    end
+
+    test "update_click/2 with invalid data returns error changeset" do
+      click = click_fixture()
+      assert {:error, %Ecto.Changeset{}} = Urls.update_click(click, @invalid_attrs)
+      assert click == Urls.get_click!(click.id)
+    end
+
+    test "delete_click/1 deletes the click" do
+      click = click_fixture()
+      assert {:ok, %Click{}} = Urls.delete_click(click)
+      assert_raise Ecto.NoResultsError, fn -> Urls.get_click!(click.id) end
+    end
+
+    test "change_click/1 returns a click changeset" do
+      click = click_fixture()
+      assert %Ecto.Changeset{} = Urls.change_click(click)
+    end
+  end
 end

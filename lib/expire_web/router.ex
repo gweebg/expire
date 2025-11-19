@@ -26,7 +26,7 @@ defmodule ExpireWeb.Router do
 
   scope "/u", ExpireWeb do
     pipe_through :api
-    get "/:id", UrlController, :show
+    get "/:slug", UrlController, :show
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
