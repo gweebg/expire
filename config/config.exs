@@ -7,6 +7,12 @@
 # General application configuration
 import Config
 
+config :expire, Oban,
+  engine: Oban.Engines.Lite,
+  notifier: Oban.Notifiers.PG,
+  queues: [url_analytics: 50],
+  repo: Expire.Repo
+
 config :expire, :scopes,
   user: [
     default: true,

@@ -12,6 +12,7 @@ defmodule Expire.Application do
       Expire.Repo,
       {Ecto.Migrator,
        repos: Application.fetch_env!(:expire, :ecto_repos), skip: skip_migrations?()},
+      {Oban, Application.fetch_env!(:expire, Oban)},
       {DNSCluster, query: Application.get_env(:expire, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Expire.PubSub},
       # Start a worker by calling: Expire.Worker.start_link(arg)

@@ -100,14 +100,14 @@ defmodule Expire.Urls do
 
   ## Examples
 
-      iex> get_url_by_short("aX1u")
+      iex> get_url_slug("aX1u")
       %Url{}
 
-      iex> get_url_by_short("1")
+      iex> get_url_by_slug("1")
       nil
   """
-  def get_url_by_short(short_name) when is_binary(short_name) do
-    Repo.get_by(Url, short: short_name)
+  def get_url_by_slug(slug) when is_binary(slug) do
+    Repo.get_by(Url, short: slug)
   end
 
   @doc """
