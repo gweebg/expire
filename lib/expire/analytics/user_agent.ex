@@ -1,4 +1,4 @@
-defmodule Expire.Urls.UserAgent do
+defmodule Expire.Analytics.UserAgent do
   use Ecto.Schema
 
   import Ecto.Changeset

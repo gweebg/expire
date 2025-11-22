@@ -15,6 +15,7 @@ defmodule Expire.Application do
       {Oban, Application.fetch_env!(:expire, Oban)},
       {DNSCluster, query: Application.get_env(:expire, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Expire.PubSub},
+      Expire.Analytics.GeolocationServer,
       # Start a worker by calling: Expire.Worker.start_link(arg)
       # {Expire.Worker, arg},
       # Start to serve requests, typically the last entry

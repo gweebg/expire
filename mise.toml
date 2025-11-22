@@ -1,3 +1,10 @@
 [tools]
 erlang = "26.2"
 elixir = "1.18.1-otp-26"
+
+# [env]
+# ANON_SALT = "<mix phx.gen.secret>"
+
+# GEOIP_IP2LOCATION_DB = "path"
+# GEOIP_TRUST_HEADER = true
+# GEOIP_HEADER_NAME = "x-visitor-country"

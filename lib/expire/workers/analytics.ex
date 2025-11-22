@@ -10,7 +10,7 @@ defmodule Expire.Workers.Analytics do
 
   require Logger
 
-  alias Expire.Urls
+  alias Expire.{Urls, Analytics}
 
   use Oban.Worker,
     queue: :url_analytics,
@@ -41,12 +41,25 @@ defmodule Expire.Workers.Analytics do
           } = _job
       }) do
     ua = UAInspector.parse(user_agent)
-    ua_attrs = Urls.UserAgent.to_embed_attrs(ua)
+    ua_attrs = Analytics.UserAgent.to_embed_attrs(ua)
     bot? = match?(^ua, %UAInspector.Result.Bot{})
+
+    geolocation =
+      case Analytics.GeolocationServer.lookup(ip_address) do
+        {:ok, geo_attrs} ->
+          geo_attrs
+
+        {:error, reason} ->
+          Logger.error(
+            "failed to lookup ip address geolocation for #{inspect(ip_address)} with error: #{inspect(reason)}"
+          )
+
+          nil
+      end
 
     case Urls.create_click(%{
            ip: ip_address,
-           country: "unknown",
+           geolocation: geolocation,
            referrer: referrer,
            bot: bot?,
            user_agent: ua_attrs,

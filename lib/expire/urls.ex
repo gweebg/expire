@@ -70,6 +70,7 @@ defmodule Expire.Urls do
   end
 
   defp anon_hash(anon_id) when is_binary(anon_id) do
+    # todo: do not perma load this
     salt = Application.fetch_env!(:expire, :anon_salt)
     :crypto.hash(:sha256, salt <> ":" <> Ecto.UUID.dump!(anon_id))
   end

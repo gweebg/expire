@@ -20,11 +20,21 @@ if System.get_env("PHX_SERVER") do
   config :expire, ExpireWeb.Endpoint, server: true
 end
 
-anon_salt = System.get_env("ANON_SALT") ||
+anon_salt =
+  System.get_env("ANON_SALT") ||
     raise """
     environment variable ANON_SALT is missing.
     """
+
 config :expire, :anon_salt, anon_salt
+
+iplocation_db_path =
+  System.get_env("GEOIP_IP2LOCATION_DB") ||
+    raise """
+    environment variable ANON_SALT is missing.
+    """
+
+config :expire, :iplocation_db_path, iplocation_db_path
 
 if config_env() == :prod do
   database_path =

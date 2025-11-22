@@ -70,6 +70,7 @@ defmodule Expire.MixProject do
       {:sourceror, "~> 1.10"},
       {:oban, "~> 2.19"},
       {:ua_inspector, "~> 3.0"},
+      {:ip2location_erlang, "~> 8.7.0"},
       {:igniter, "~> 0.5", only: [:dev]}
     ]
   end

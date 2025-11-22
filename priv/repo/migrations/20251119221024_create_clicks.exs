@@ -7,7 +7,7 @@ defmodule Expire.Repo.Migrations.CreateClicks do
 
       add :ip, :string
       add :user_agent, :map
-      add :country, :string
+      add :geolocation, :map
       add :referrer, :string
       add :bot, :boolean
 
